@@ -1,12 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
+import { client } from 'lib/apollo-client';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Provider } from 'react-redux';
+import { store } from 'redux/store';
+import { UsersProvider } from 'context/usersContext';
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider {...{ store }}>
+      <ApolloProvider client={client}>
+        <QueryClientProvider client={queryClient}>
+          <UsersProvider>
+            <Router>
+              <App />
+            </Router>
+          </UsersProvider>
+        </QueryClientProvider>
+      </ApolloProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
